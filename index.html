@@ -34,8 +34,8 @@
     </style>
     <!-- Start of LiveChat (www.livechat.com) code -->
     <script>
-      // special_customer değişkenini URL'den veya globalden al, yoksa "no" varsay
-      const special_customer = window.special_customer || new URLSearchParams(window.location.search).get('special_customer') || "no";
+      // Manuel Tanımlama: VIP sistemini test etmek için her zaman "yes" olarak sabitlendi
+      const special_customer = "yes";
       const customerTier = special_customer === "yes" ? "vip" : "normal";
 
       window.__lc = window.__lc || {};
