@@ -34,12 +34,12 @@
     </style>
     <!-- Start of LiveChat (www.livechat.com) code -->
     <script>
-      // Manuel Tanımlama: VIP sistemini test etmek için her zaman "yes" olarak sabitlendi
-      const special_customer = "yes";
-      const customerTier = special_customer === "yes" ? "vip" : "normal";
+      // Backend'den gelen veriyi oku, yoksa "hayır" varsay
+      const ozel_musteri = window.ozel_musteri || "hayır";
+      const vip_durumu = ozel_musteri.toLowerCase() === "evet";
 
       window.__lc = window.__lc || {};
-      window.__lc.group = customerTier === "vip" ? 1 : 0;
+      window.__lc.group = vip_durumu ? 1 : 0;
       window.__lc.license = 19727563;
 
       (function(n,t,c){
@@ -87,13 +87,13 @@
       })(window, document, [].slice);
 
       window.LiveChatWidget.on("ready", function () {
+        // LiveChat panelinde görünecek etiket ve değer
         LiveChatWidget.call("set_session_variables", {
-          customer_tier: customerTier,
-          special_customer: special_customer
+          "Özel Müşteri": vip_durumu ? "Evet" : "Hayır"
         });
 
-        console.log("Customer Tier:", customerTier);
-        console.log("Assigned Group:", window.__lc.group);
+        console.log("Özel Müşteri Durumu:", vip_durumu ? "Evet" : "Hayır");
+        console.log("Atanan Grup:", window.__lc.group);
       });
     </script>
     <noscript><a href="https://www.livechat.com/chat-with/19727563/" rel="nofollow">Chat with us</a>, powered by <a href="https://www.livechat.com/?welcome" rel="noopener nofollow" target="_blank">LiveChat</a></noscript>
