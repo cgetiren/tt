@@ -21,21 +21,42 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
-    <!-- LiveChat Widget Positioning -->
+    <!-- Widget konumlandırma: LiveChat sol, ElevenLabs sağ -->
     <style>
-        #livechat-full-view {
-            left: 0 !important;
-            right: auto !important;
-        }
+        #livechat-full-view,
         #chat-widget-container {
             left: 20px !important;
             right: auto !important;
+            bottom: 0 !important;
+            z-index: 9998 !important;
+        }
+
+        elevenlabs-convai {
+            position: fixed !important;
+            bottom: 20px !important;
+            right: 20px !important;
+            left: auto !important;
+            z-index: 9999 !important;
         }
     </style>
-    <!-- Backend özel üye bilgisini widget'tan önce set edebilir:
-         <script>window.ozel_musteri = "evet";</script> -->
     <!-- Start of LiveChat (www.livechat.com) code -->
-    <script src="livechat-widget.js"></script>
+    <script>
+      var ozel_musteri = window.ozel_musteri || "hayır";
+      var vip_durumu = ozel_musteri.toLowerCase() === "evet";
+
+      window.__lc = window.__lc || {};
+      window.__lc.license = 19727563;
+      window.__lc.integration_name = "manual_channels";
+      window.__lc.product_name = "livechat";
+      window.__lc.group = vip_durumu ? 1 : 2;
+      ;(function(n,t,c){function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[LiveChatWidget] You can't use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.livechatinc.com/tracking.js",t.head.appendChild(n)}};!n.__lc.asyncInit&&e.init(),n.LiveChatWidget=n.LiveChatWidget||e}(window,document,[].slice))
+
+      LiveChatWidget.on("ready", function () {
+        LiveChatWidget.call("set_session_variables", {
+          "Özel Müşteri": vip_durumu ? "Evet" : "Hayır"
+        });
+      });
+    </script>
     <noscript><a href="https://www.livechat.com/chat-with/19727563/" rel="nofollow">Chat with us</a>, powered by <a href="https://www.livechat.com/?welcome" rel="noopener nofollow" target="_blank">LiveChat</a></noscript>
     <!-- End of LiveChat code -->
 
