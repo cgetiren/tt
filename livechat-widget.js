@@ -10,10 +10,6 @@
 (function () {
   "use strict";
 
-  var LICENSE_NUMBER = 19727563;
-  var GROUP_OZEL_MUSTERI = 1;
-  var GROUP_NORMAL_MUSTERI = 2;
-
   function readUrlParam(name) {
     var params = new URLSearchParams(window.location.search);
     return params.get(name);
@@ -51,33 +47,28 @@
     return isOzelMusteri(value) ? "Evet" : "Hayır";
   }
 
-  function getLiveChatGroupId(value) {
-    return isOzelMusteri(value) ? GROUP_OZEL_MUSTERI : GROUP_NORMAL_MUSTERI;
-  }
-
   function applySessionVariables(ozelMusteriValue) {
     LiveChatWidget.call("set_session_variables", {
       "Özel Müşteri": getOzelMusteriLabel(ozelMusteriValue)
     });
   }
 
-  var ozelMusteriValue = resolveOzelMusteriValue();
-  var ozelMusteriAktif = isOzelMusteri(ozelMusteriValue);
-  var liveChatGroupId = getLiveChatGroupId(ozelMusteriValue);
+  var ozel_musteri = resolveOzelMusteriValue();
+  var vip_durumu = isOzelMusteri(ozel_musteri);
 
   window.__lc = window.__lc || {};
-  window.__lc.license = LICENSE_NUMBER;
-  window.__lc.group = liveChatGroupId;
+  window.__lc.license = 19727563;
+  window.__lc.group = vip_durumu ? 1 : 2;
 
   window.MiniOyunlarLiveChat = {
     getOzelMusteriDurumu: function () {
-      return getOzelMusteriLabel(ozelMusteriValue);
+      return getOzelMusteriLabel(ozel_musteri);
     },
     getGrupId: function () {
-      return liveChatGroupId;
+      return vip_durumu ? 1 : 2;
     },
     isOzelMusteri: function () {
-      return ozelMusteriAktif;
+      return vip_durumu;
     }
   };
 
@@ -125,14 +116,14 @@
   })(window, document, [].slice);
 
   function onLiveChatReady() {
-    applySessionVariables(ozelMusteriValue);
+    applySessionVariables(ozel_musteri);
   }
 
   LiveChatWidget.on("ready", onLiveChatReady);
 
   LiveChatWidget.on("form_submitted", function (data) {
     if (data.type === "prechat") {
-      applySessionVariables(ozelMusteriValue);
+      applySessionVariables(ozel_musteri);
     }
   });
 })();
